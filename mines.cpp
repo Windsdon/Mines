@@ -272,7 +272,7 @@ void Mines::OnLoop() {
                         } else {
                             if(!(*f>>fieldNumShift)) {
                                 printf("Tile at (%i, %i) is empty\n", j, i);
-                                int floodFillArray[MAP_WIDTH*MAP_HEIGHT][3] = {j, i, 1},
+                                int floodFillArray[MAP_WIDTH*MAP_HEIGHT*4][3] = {j, i, 1},
                                         k, l, m, countArray = 1, active = 1;
                                 do {
                                     for(k = 0; k < countArray; k++) {
@@ -291,7 +291,7 @@ void Mines::OnLoop() {
                                                 { currentX - 1, currentY - 1 }
                                             };
 
-                                            for(l = 0; l < 4; l++) {
+                                            for(l = 0; l < 8; l++) {
                                                 if(addList[l][0] < 0 || addList[l][1] < 0 ||
                                                         addList[l][0] >= MAP_WIDTH || addList[l][0] >= MAP_HEIGHT) {
                                                     continue;
@@ -300,6 +300,7 @@ void Mines::OnLoop() {
                                                 for(m = 0; m < countArray; m++) {
                                                     int *now = floodFillArray[m];
                                                     if(now[0] == addList[l][0] && now[1] == addList[l][1]) {
+                                                        printf("Repeted excluded. Total elements: %d\n", countArray);
                                                         addThis = 0;
                                                         break;
                                                     }
@@ -311,6 +312,9 @@ void Mines::OnLoop() {
                                                     newSpace[0] = addList[l][0];
                                                     newSpace[1] = addList[l][1];
                                                     newSpace[2] = (field[addList[l][1]][addList[l][0]]>>fieldNumShift) == 0;
+                                                    if(newSpace[2]){
+                                                        active++;
+                                                    }
                                                 }
                                             }
                                             active--;
@@ -318,6 +322,7 @@ void Mines::OnLoop() {
                                         }
                                     }
                                 } while(active > 0);
+                                printf("Active: %d", active);
                                 for(k = 0; k < countArray; k++) {
                                     field[floodFillArray[k][1]][floodFillArray[k][0]] |= shown;
                                     printf("%i %i - ", floodFillArray[k][0], floodFillArray[k][1]);
