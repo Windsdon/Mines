@@ -300,7 +300,7 @@ void Mines::OnLoop() {
                                                 for(m = 0; m < countArray; m++) {
                                                     int *now = floodFillArray[m];
                                                     if(now[0] == addList[l][0] && now[1] == addList[l][1]) {
-                                                        printf("Repeted excluded. Total elements: %d\n", countArray);
+                                                        printf("Repeated excluded. Total elements: %d\n", countArray);
                                                         addThis = 0;
                                                         break;
                                                     }
